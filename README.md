@@ -1,4 +1,4 @@
-# Langchain RAG Tutorial
+# Teacher AI
 
 ## Install dependencies
 

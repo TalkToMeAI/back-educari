@@ -1,0 +1,13 @@
+{
+  "asignature": "Historia",
+  "module": "Civilizaciones Antiguas",
+  "student": {
+    "name": "Juan Pérez",
+    "age": 16,
+    "year": 2,
+    "email": "juan.perez@example.com"
+  },
+  "question": "¿Qué es la civilización egipcia?",
+  "topic": "Antiguo Egipto",
+  "question_number": 1
+}
