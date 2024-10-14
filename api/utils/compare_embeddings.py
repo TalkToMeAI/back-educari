@@ -26,7 +26,8 @@ def create_ascii_chart(results):
 
 def main():
     global comparison_word
-    comparison_word = "Music"
+    # comparison_word = "I am a seventh grade child who has to learn "
+    comparison_word = "Data Science" 
     
     embedding_function = OpenAIEmbeddings()
     vector = embedding_function.embed_query(comparison_word)
@@ -34,8 +35,13 @@ def main():
 
     evaluator = load_evaluator("pairwise_embedding_distance")
 
-    words_to_compare = [("pear", comparison_word), ("fruits", comparison_word), ("orange", comparison_word), ("dance", comparison_word)]
-    
+    words_to_compare = [
+        ("Fractions", comparison_word),
+        ("Proportions and Ratios", comparison_word),
+        ("Algebra", comparison_word),
+        ("Geometry", comparison_word),
+        ("Statistics", comparison_word)
+    ]    
     results = []
     
     for word1, word2 in words_to_compare:
@@ -48,7 +54,7 @@ def main():
     ascii_chart = create_ascii_chart(results)
     md_content += ascii_chart + "\n"
 
-    with open("../test/embedding_comparisons2.md", "w") as f:
+    with open("../test/embedding_comparisons7.md", "w") as f:
         f.write(md_content)
     
     print("Resultados guardados en test/embedding_comparisons.md")
