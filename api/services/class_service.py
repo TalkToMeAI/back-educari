@@ -2,6 +2,8 @@ import openai
 import faiss
 import numpy as np
 # from utils import get_embedding, read_text, generate_answer
+from langchain_community.embeddings.bedrock import BedrockEmbeddings
+
 from api.models.Class  import Class , Student
 class ClassService:
     def __init__(self, class_data: Class):
@@ -23,7 +25,11 @@ class ClassService:
         return "read_text(self.class_path).split"
 
     def create_embeddings(self):
-        return "[get_embedding(section) for section in self.class_sections]"
+        embeddings = BedrockEmbeddings(
+        credentials_profile_name="default", region_name="us-east-1")
+        
+
+        return embeddings
 
     def create_index(self):
         # dimension = len(self.embeddings[0])
@@ -36,3 +42,9 @@ class ClassService:
         # _, indices = self.index.search(np.array([query_embedding]), k=5)
         # relevant_sections = [self.class_sections[i] for i in indices[0]]
         return "generate_answer(question)"
+    
+    def query_rag(self):
+        # dimension = len(self.embeddings[0])
+        # index = faiss.IndexFlatL2(dimension)
+        # index.add(np.array(self.embeddings))
+        return "index"

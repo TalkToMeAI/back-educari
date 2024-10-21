@@ -1,9 +1,11 @@
 from fastapi import FastAPI,APIRouter
-# from api.controllers import products, ingredients,video_tutorial, preparation, recipe
-from api.controllers import class_controler
+from api.routes import class_controler, chroma_routes, rag_routes
 app = FastAPI()
 
-app.include_router(class_controler.routes, prefix="/class")
+# app.include_router(class_controler.routes, prefix="/class")
+app.include_router(chroma_routes.routes, prefix="/db")
+app.include_router(rag_routes.routes, prefix="/rag")
+
 routes = APIRouter()
 
 @app.get("/")
