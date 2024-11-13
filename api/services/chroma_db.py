@@ -8,7 +8,7 @@ from langchain.vectorstores.chroma import Chroma
 from api.services.rag_service import RAGQueryHandler 
 
 class DocumentDatabaseManager:
-    def __init__(self, chroma_path="chroma", data_path="data", embedding_type="openai"):
+    def __init__(self, chroma_path="chroma", data_path="data/class/math/number_operation/content/2", embedding_type="openai"):
         self.CHROMA_PATH = chroma_path
         self.DATA_PATH = data_path
         self.embedding_type = embedding_type
@@ -89,12 +89,3 @@ class DocumentDatabaseManager:
         if os.path.exists(self.CHROMA_PATH):
             shutil.rmtree(self.CHROMA_PATH)
 
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--reset", action="store_true", help="Reset the database.")
-    parser.add_argument("--embedding", type=str, default="bedrock", help="Embedding type: 'bedrock' or 'ollama'.")
-    args = parser.parse_args()
-
-    db_manager = DocumentDatabaseManager(embedding_type=args.embedding)
-    db_manager.main(reset=args.reset)

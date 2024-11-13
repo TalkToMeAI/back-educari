@@ -34,9 +34,9 @@ class RAGQueryHandler:
         if embedding_type == "bedrock":
             return BedrockEmbeddings(credentials_profile_name="default", region_name="us-east-1")
         elif embedding_type == "ollama":
-            return OllamaEmbeddings()  # Asegúrate de que OllamaEmbeddings esté correctamente configurado
+            return OllamaEmbeddings()  
         elif embedding_type == "openai":
-            return OpenAIEmbeddings(model="text-embedding-3-large")  # Ajusta el modelo según lo que necesites
+            return OpenAIEmbeddings()
         else:
             raise ValueError(f"Unknown embedding type: {embedding_type}")
 
@@ -46,27 +46,14 @@ class RAGQueryHandler:
 
         prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
         prompt = prompt_template.format(context=context_text, question=query_text)
+        print(prompt)
+        
+        openai_model = ChatOpenAI()
+        response_text = openai_model.invoke(prompt)
 
-        # Utiliza el método `generate` para crear la respuesta
-        openai_model = ChatOpenAI(model_name=model_name)
-        response = openai_model.generate(prompt)
-
-        response_text = response.generations[0][0].text.strip()  # Ajusta según el formato de la respuesta
         sources = [doc.metadata.get("id", None) for doc, _score in results]
         formatted_response = f"Response: {response_text}\nSources: {sources}"
         print(formatted_response)
         return response_text
 
-    @classmethod
-    def from_cli(cls):
-        parser = argparse.ArgumentParser()
-        parser.add_argument("query_text", type=str, help="The query text.")
-        parser.add_argument("--model", type=str, default="gpt-3.5-turbo", help="Model to use for answering the query.")
-        parser.add_argument("--embedding", type=str, default="openai", help="Embedding type: 'bedrock', 'ollama', or 'openai'.")
-        args = parser.parse_args()
 
-        handler = cls(embedding_type=args.embedding)
-        handler.query_rag(query_text=args.query_text, model_name=args.model)
-
-if __name__ == "__main__":
-    RAGQueryHandler.from_cli()

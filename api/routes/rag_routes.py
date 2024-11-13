@@ -5,9 +5,9 @@ from api.services.rag_service import RAGQueryHandler
 routes = APIRouter()
 
 class RAGQuery(BaseModel):
-    query_text: str
+    question: str
     model: str = "gpt-3.5-turbo"
-    embedding: str = "bedrock"
+    embedding: str = "openai"
 
 @routes.post("/rag")
 async def rag(rag_query: RAGQuery):
@@ -15,7 +15,7 @@ async def rag(rag_query: RAGQuery):
         print("Entrando al RAG")
         handler = RAGQueryHandler()
         print("Sale del rag")
-        response = handler.query_rag(query_text=rag_query.query_text, model_name=rag_query.model)
+        response = handler.query_rag(query_text=rag_query.question, model_name=rag_query.model)
         return {"response": response}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

@@ -11,7 +11,7 @@ async def load_documents(reset: bool = False):
     Carga documentos desde la ruta especificada y genera embeddings.
     """
     try:
-        db_manager.main(reset=reset)  # Carga y genera embeddings
+        db_manager.main(reset=reset)  
         return {"message": "Documents loaded and embeddings created.", "reset": reset}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
