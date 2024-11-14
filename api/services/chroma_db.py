@@ -1,9 +1,9 @@
 import argparse
 import os
 import shutil
-from langchain.document_loaders.pdf import PyPDFDirectoryLoader
+import pdfplumber
+from langchain.schema import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain.schema.document import Document
 from langchain.vectorstores.chroma import Chroma
 from api.services.rag_service import RAGQueryHandler 
 
@@ -12,7 +12,6 @@ class DocumentDatabaseManager:
         self.CHROMA_PATH = chroma_path
         self.DATA_PATH = data_path
         self.embedding_type = embedding_type
-
         self.rag_handler = RAGQueryHandler(embedding_type=self.embedding_type)
 
     def main(self, reset=False):
@@ -25,8 +24,17 @@ class DocumentDatabaseManager:
         self.add_to_chroma(chunks)
 
     def load_documents(self):
-        document_loader = PyPDFDirectoryLoader(self.DATA_PATH)
-        return document_loader.load()
+        # Usa pdfplumber para cargar documentos PDF en vez de PyPDFDirectoryLoader
+        documents = []
+        for file_name in os.listdir(self.DATA_PATH):
+            if file_name.endswith(".pdf"):
+                file_path = os.path.join(self.DATA_PATH, file_name)
+                with pdfplumber.open(file_path) as pdf:
+                    for page_num, page in enumerate(pdf.pages):
+                        text = page.extract_text()
+                        if text:
+                            documents.append(Document(page_content=text, metadata={"source": file_name, "page": page_num + 1}))
+        return documents
 
     def split_documents(self, documents: list[Document]):
         text_splitter = RecursiveCharacterTextSplitter(
@@ -64,7 +72,6 @@ class DocumentDatabaseManager:
             print("✅ No new documents to add")
 
     def calculate_chunk_ids(self, chunks):
-
         last_page_id = None
         current_chunk_index = 0
 
@@ -80,7 +87,6 @@ class DocumentDatabaseManager:
 
             chunk_id = f"{current_page_id}:{current_chunk_index}"
             last_page_id = current_page_id
-
             chunk.metadata["id"] = chunk_id
 
         return chunks
@@ -88,4 +94,3 @@ class DocumentDatabaseManager:
     def clear_database(self):
         if os.path.exists(self.CHROMA_PATH):
             shutil.rmtree(self.CHROMA_PATH)
-
