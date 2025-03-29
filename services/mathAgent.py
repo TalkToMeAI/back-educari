@@ -120,7 +120,7 @@ def supervisar_progreso_clase(
 ) -> dict:
     """
     Evalúa si el alumno debe repetir la etapa, avanzar, recibir ayuda o finalizar la clase.
-    Devuelve un dict con "accion" y "justificacion".
+    Devuelve un dict con "accion" y "justificacio".
     """
 
     logger.info(f"Evaluando progreso del estudiante en etapa: {estado.etapa_actual}")
