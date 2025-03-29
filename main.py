@@ -7,7 +7,7 @@ from typing import List, Literal
 from services.openai_client import OpenAIChatClient
 from services.mathAgent import plan_clase_dinamica, StudentProfile, ClassContentChunk
 from services.chatSupervisor import SupervisarClaseRequest, ChatbotDecision, manejar_chat_pedagogico_con_clase
-
+from services.teacherMath import clase_personalizada
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -76,6 +76,35 @@ def supervisar_chat_de_clase(request: SupervisarClaseRequest):
         historial=request.historial,
         clase=request.clase_generada
     )
+
+
+
+
+@app.post("/clase/recursos")
+def crear_clase (
+    id_estudiante: str,
+    id_clase: str,
+
+):
+    return clase_personalizada(
+        id_estudiante = id_estudiante,
+        id_clase = id_clase
+    )
+
+
+
+@app.post("/clase/ia")
+def crear_clase (
+    id_estudiante: str,
+    id_clase: str,
+
+):
+    return clase_personalizada(
+        id_estudiante = id_estudiante,
+        id_clase = id_clase
+    )
+
+
 
 # {
 #   "messages": [
