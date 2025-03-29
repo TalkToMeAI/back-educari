@@ -9,6 +9,9 @@ from services.mathAgent import plan_clase_dinamica, StudentProfile, ClassContent
 from services.chatSupervisor import SupervisarClaseRequest, ChatbotDecision, manejar_chat_pedagogico_con_clase
 from services.teacherMath import clase_personalizada
 from dotenv import load_dotenv
+from services.classSupabase import generar_clase_dinamica_sin_chunks
+
+
 load_dotenv()
 
 chat_client = OpenAIChatClient()
@@ -81,7 +84,7 @@ def supervisar_chat_de_clase(request: SupervisarClaseRequest):
 
 
 @app.post("/clase/recursos")
-def crear_clase (
+def crear_clase_recursos (
     id_estudiante: str,
     id_clase: str,
 
@@ -94,12 +97,12 @@ def crear_clase (
 
 
 @app.post("/clase/ia")
-def crear_clase (
+def crear_clase_ia (
     id_estudiante: str,
     id_clase: str,
 
 ):
-    return clase_personalizada(
+    return generar_clase_dinamica_sin_chunks(
         id_estudiante = id_estudiante,
         id_clase = id_clase
     )
