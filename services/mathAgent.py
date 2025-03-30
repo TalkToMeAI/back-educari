@@ -33,6 +33,13 @@ class ClassContentChunk(BaseModel):
     dificultad: Literal["básico", "intermedio", "avanzado"]
     tipo_contenido: Literal["teoría", "ejemplo", "ejercicio"]
 
+
+class Ejercicio(BaseModel):
+    enunciado: str
+    opciones: List[str]
+    respuesta_correcta: str
+
+
 class ClaseDinamica(BaseModel):
     introduccion_emocional: str
     repaso_unidad: Optional[str]
@@ -40,6 +47,8 @@ class ClaseDinamica(BaseModel):
     desarrollo: str
     ejemplos: List[str]
     ejercicios: List[str]
+    ejercicios_ordenados: Optional[List[Ejercicio]] = None  # ← Nuevo campo
+
     retroalimentacion: str
     sintesis: str
     recursos_apoyo: Optional[List[dict]] = None  # 🔥 Nuevo campo
@@ -126,7 +135,18 @@ Genera una clase interactiva en formato JSON con los siguientes campos. En cada 
 - Si en desarrollo hay una imagen que explica un concepto, inclúyela con algo como: "Observa la imagen [nombre o descripción] aquí: [URL]".
 - En ejemplos o ejercicios, si hay un video o imagen de apoyo, úsala como complemento visual.
 - No repitas los recursos dos veces, úsalos solo en la etapa que corresponde.
+Además, al final incluye un campo adicional llamado `ejercicios_ordenados`, que es una lista de objetos con:
+- enunciado
+- opciones (a-e)
+- respuesta_correcta (valor textual)
 
+Ejemplo:
+"ejercicios_ordenados": [
+  {{
+    "enunciado": "¿Cuál es el resultado de 3 x 4?",
+    "opciones": ["6", "7", "12", "14", "9"],
+    "respuesta_correcta": "12"
+  }},
 Formato final esperado:
 
 {{
@@ -146,7 +166,13 @@ Formato final esperado:
       "etapa_uso": "introduccion" | "desarrollo" | "ejemplos" | "ejercicios" | "sintesis",
       "url": "https://..."
     }}
-  ]
+  ],
+  "ejercicios_ordenados": [
+  {{
+    "enunciado": "¿Cuál es el resultado de 3 x 4?",
+    "opciones": ["6", "7", "12", "14", "9"],
+    "respuesta_correcta": "12"
+  }}
 }}
 """
 
