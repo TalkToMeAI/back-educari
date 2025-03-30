@@ -105,10 +105,10 @@ def plan_clase_dinamica(
     logger.info(f"Generando clase dinámica para {materia} - {clase} - estado emocional: {student_profile.estado_emocional}")
 
     prompt = f"""
-Eres un profesor experto en {programa}, dictando una clase de la asignatura {materia}, módulo {modulo}, unidad {unidad}, tema: "{clase}".
-Esta clase trata sobre: "{descripcion_clase}".
+Eres un profesor de {programa}, abordando la asignatura de {materia}. Estás por dictar una clase del módulo {modulo}, en la unidad {unidad}, sobre el tema: {clase}. Esta clase consiste en: {descripcion_clase}.
+ 
 
-Perfil del estudiante:
+El estudiante tiene el siguiente perfil:
 {student_profile.model_dump_json(indent=2)}
 
 Es {'la primera clase' if es_primera_clase else 'una clase posterior'} de la unidad.
@@ -130,20 +130,15 @@ Genera una clase interactiva en formato JSON con los siguientes campos. En cada 
 Formato final esperado:
 
 {{
-  "introduccion_emocional": "Saludo inicial empático...",
-  "repaso_unidad": "Si es la primera clase, explicar unidad. Si no, omitir o breve mención.",
-  "resumen_clase_anterior": "Solo si no es la primera clase",
-  "desarrollo": "Explicación del contenido usando recursos visuales si aplica. Integrar imágenes con URLs y descripciones cuando sea posible.",
-  "ejemplos": [
-    "Ejemplo 1 explicado paso a paso. Ver imagen: https://...",
-    "Ejemplo 2..."
-  ],
-  "ejercicios": [
-    "Ejercicio 1 (opciones a-e)",
-    "Ejercicio 2..."
-  ],
-  "retroalimentacion": "Mensajes según respuestas correctas/incorrectas",
-  "sintesis": "Resumen final que refuerce los aprendizajes. Puedes usar recursos si hay.",
+
+   "introduccion_emocional": "Saludo inicial y respuesta empática según el estado emocional",
+   "repaso_unidad": "Si es primera clase, introducir unidad; si no, omitir",
+   "resumen_clase_anterior": "Si no es primera clase, incluir resumen",
+   "desarrollo": "Explicación adaptada al estado emocional y nivel del alumno",
+   "ejemplos": ["Ejemplo 1 resuelto", "Ejemplo 2 resuelto", "..."],
+   "ejercicios": ["Ejercicio 1 con opciones a-e", "Ejercicio 2...", "..."],
+   "retroalimentacion": "Texto para retroalimentar según respuestas correctas/incorrectas",
+   "sintesis": "Resumen final de la clase, reforzando utilidad del contenido y vínculo con sus intereses"
   "recursos_apoyo": [
     {{
       "tipo": "imagen" | "video" | "documento",
