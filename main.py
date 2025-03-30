@@ -1,34 +1,48 @@
-from fastapi import FastAPI,APIRouter
-# from api.controllers import products, ingredients,video_tutorial, preparation, recipe
-
+from fastapi import FastAPI, APIRouter
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import List, Literal
+from typing import List
 
 from services.openai_client import OpenAIChatClient
 from services.mathAgent import plan_clase_dinamica, StudentProfile, ClassContentChunk
 from services.chatSupervisor import SupervisarClaseRequest, ChatbotDecision, manejar_chat_pedagogico_con_clase
 from services.teacherMath import clase_personalizada
-from dotenv import load_dotenv
 from services.classSupabase import generar_clase_dinamica_sin_chunks
-
+from dotenv import load_dotenv
 
 load_dotenv()
 
 chat_client = OpenAIChatClient()
 app = FastAPI()
 
+# ✅ Lista de orígenes permitidos (agrega todos los necesarios)
+origins = [
+    "https://app.educari.cl",
+    "https://educari-front.vercel.app",
+    "https://educari-front-git-develop-jorge-oehrens-projects.vercel.app",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000"
+]
+
+# ✅ Middleware CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,           # dominios permitidos
+    allow_credentials=True,
+    allow_methods=["*"],             # permitir todos los métodos (GET, POST, etc.)
+    allow_headers=["*"],             # permitir todos los headers
+)
+
 class ChatRequest(BaseModel):
     messages: list[dict]
     model: str | None = "gpt-4o"
     system_prompt: str | None = "You're a helpful assistant."
-
 
 routes = APIRouter()
 
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
-
 
 @app.post("/chat")
 def chat(request: ChatRequest):
@@ -38,8 +52,6 @@ def chat(request: ChatRequest):
         system_prompt=request.system_prompt
     )
     return {"response": response}
-
-
 
 @app.post("/clase/dinamica")
 def crear_clase_dinamica(
@@ -65,57 +77,24 @@ def crear_clase_dinamica(
         contenido_disponible=contenido
     )
 
-
-
-
 @app.post("/clase/chatbot/supervisar", response_model=ChatbotDecision)
 def supervisar_chat_de_clase(request: SupervisarClaseRequest):
-    """
-    Endpoint para evaluar la interacción del alumno durante una clase dinámica
-    y decidir si debe avanzar, repetir, recibir ayuda o cerrar la clase.
-    """
     return manejar_chat_pedagogico_con_clase(
         perfil=request.perfil,
         historial=request.historial,
         clase=request.clase_generada
     )
 
-
-
-
 @app.post("/clase/recursos")
-def crear_clase_recursos (
-    id_estudiante: str,
-    id_clase: str,
-
-):
+def crear_clase_recursos(id_estudiante: str, id_clase: str):
     return clase_personalizada(
-        id_estudiante = id_estudiante,
-        id_clase = id_clase
+        id_estudiante=id_estudiante,
+        id_clase=id_clase
     )
-
-
 
 @app.post("/clase/ia")
-def crear_clase_ia (
-    id_estudiante: str,
-    id_clase: str,
-
-):
+def crear_clase_ia(id_estudiante: str, id_clase: str):
     return generar_clase_dinamica_sin_chunks(
-        id_estudiante = id_estudiante,
-        id_clase = id_clase
+        id_estudiante=id_estudiante,
+        id_clase=id_clase
     )
-
-
-
-# {
-#   "messages": [
-#     {
-#       "role": "user",
-#       "content": "Hello, how are you?"
-#     }
-#   ],
-#   "model": "gpt-4o",
-#   "system_prompt": "You're a helpful assistant."
-# }
