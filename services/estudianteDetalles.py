@@ -1,7 +1,7 @@
 import os
 from supabase import create_client, Client
 from dotenv import load_dotenv
-
+from resourcesClass import explicar_imagen_usando_vision
 load_dotenv()
 
 # Carga credenciales desde .env
@@ -22,13 +22,25 @@ def clase_personalizada(id_estudiante: str, id_clase: str):
     # 4. Intereses del estudiante
     intereses = supabase.table("intereses_estudiante").select("*").eq("estudiante_id", id_estudiante).execute().data
 
-    # 5. Etapa actual
+    # 5. Etapa actual y recursos relevantes
     etapa_actual = extraer_etapa_actual(contenido)
     recursos_relevantes = filtrar_contenido_por_etapa(contenido, etapa_actual)
 
+    # 🎯 5.1. Agregar explicación GPT a cada recurso relevante
+    recursos_con_explicacion = []
+    for recurso in recursos_relevantes:
+        try:
+            explicacion = explicar_imagen_usando_vision(recurso, clase_data)
+        except Exception as e:
+            explicacion = f"⚠️ No se pudo generar la explicación: {str(e)}"
+            print(explicacion)
+
+        recurso["explicacion_gpt"] = explicacion
+        recursos_con_explicacion.append(recurso)
+
+
     # 6. Obtener resultados con info de prueba asociada
     resultados_con_pruebas = []
-
     for resultado in resultados:
         prueba_id = resultado.get("prueba_id")
         if prueba_id:
@@ -47,12 +59,10 @@ def clase_personalizada(id_estudiante: str, id_clase: str):
         "clase": clase_data,
         "contenido_completo": contenido,
         "etapa_actual": etapa_actual,
-        "recursos_relevantes": recursos_relevantes,
+        "recursos_relevantes": recursos_con_explicacion,  # ← ✅ con explicación GPT
         "resultados_estudiante": resultados_con_pruebas,
         "intereses_estudiante": intereses
     }
-
-
 def extraer_etapa_actual(contenido):
     etapas = [c["etapa"] for c in contenido if c.get("etapa")]
     return etapas[-1] if etapas else None

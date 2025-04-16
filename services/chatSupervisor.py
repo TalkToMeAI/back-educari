@@ -1,8 +1,6 @@
 from typing import List, Literal, Optional
 from pydantic import BaseModel
-from services.mathAgent import supervisar_progreso_clase, StudentProfile
 from services.mathAgent import StudentProfile, ClaseDinamica  # donde definiste esos modelos
-
 import logging
 
 logger = logging.getLogger(__name__)
@@ -46,6 +44,45 @@ class ChatbotDecision(BaseModel):
     justificacion: str
     nueva_etapa: Optional[str] = None  # si cambia la etapa
     mensaje_bot: str  # respuesta del bot al estudiante
+
+def supervisar_progreso_clase(estado: ClaseHistorial, perfil: StudentProfile) -> dict:
+    """
+    Supervisa el progreso del alumno y determina la siguiente acción pedagógica.
+    """
+    # Evaluar estado emocional y desempeño
+    if estado.estado_emocional == "mal":
+        return {
+            "accion": "entregar_ayuda",
+            "justificacion": "El estudiante necesita apoyo adicional"
+        }
+    
+    # Si hay respuestas incorrectas en ejercicios
+    if (estado.respuestas_alumno and estado.respuestas_correctas and
+        len(estado.respuestas_alumno) != sum(estado.respuestas_correctas)):
+        return {
+            "accion": "mostrar_ejemplos_adicionales",
+            "justificacion": "El estudiante necesita más práctica"
+        }
+    
+    # Si el estudiante está inseguro
+    if estado.estado_emocional == "inseguro":
+        return {
+            "accion": "repetir_etapa",
+            "justificacion": "Reforzar la comprensión del tema"
+        }
+    
+    # Si todo va bien, avanzar
+    if estado.estado_emocional == "motivado":
+        return {
+            "accion": "pasar_a_siguiente_etapa",
+            "justificacion": "El estudiante está listo para avanzar"
+        }
+    
+    # Por defecto, continuar con la etapa actual
+    return {
+        "accion": "continuar",
+        "justificacion": "Mantener el ritmo actual de la clase"
+    }
 
 def manejar_chat_pedagogico_con_clase(
     perfil: StudentProfile,

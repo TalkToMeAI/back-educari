@@ -2,14 +2,14 @@ from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
-
 from services.openai_client import OpenAIChatClient
-from services.mathAgent import plan_clase_dinamica, StudentProfile, ClassContentChunk
+from services.mathAgent import plan_clase_dinamica
 from services.chatSupervisor import SupervisarClaseRequest, ChatbotDecision, manejar_chat_pedagogico_con_clase
 from services.teacherMath import clase_personalizada
 from services.classSupabase import generar_clase_dinamica_sin_chunks
 from dotenv import load_dotenv
-
+from models.studenProfile import StudentProfile
+from models.constContectChunk import ClassContentChunk
 load_dotenv()
 
 chat_client = OpenAIChatClient()
@@ -42,7 +42,7 @@ routes = APIRouter()
 
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return {"Educari": "World"}
 
 @app.post("/chat")
 def chat(request: ChatRequest):
