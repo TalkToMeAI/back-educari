@@ -98,3 +98,10 @@ def crear_clase_ia(id_estudiante: str, id_clase: str):
         id_estudiante=id_estudiante,
         id_clase=id_clase
     )
+
+@app.post("/clase/ia2")
+def crear_clase_ia2(id_estudiante: str, id_clase: str):
+    return generar_clase_dinamica_sin_chunks(
+        id_estudiante=id_estudiante,
+        id_clase=id_clase
+    )

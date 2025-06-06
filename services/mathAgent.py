@@ -42,54 +42,75 @@ def plan_clase_dinamica(
     else:
         intereses_top = "deportes y juegos"
     prompt = f"""
-Eres un profesor de {plan_estudio_nombre}, abordando la prueba de {prueba_nombre}. Estás por dictar una clase del módulo {modulo_nombre}, en la unidad {nombre_unidad}, sobre el tema: {nombre_clase}. Esta clase consiste en: {clase_descripcion}.
+Eres un profesor de {plan_estudio_nombre}, abordando la asignatura de {prueba_nombre}. En los próximos minutos estarás dictando una clase particular del módulo 
+módulo {modulo_nombre}, correspondiente a la unidad {nombre_unidad}, la cual consiste en {clase_descripcion}. En específicio {nombre_clase}. Cuyo objetivo es enseñar al alumno sobre {clase_descripcion}.
 
+Durante toda la clase debes considerar los intereses del estudiante: {intereses_top}. Por lo tanto: 
+  - Utiliza ejemplos, explicaciones y situaciones relacionadas a esos intereses para favorecer la comprensión del contenido. 
+  - Contextualiza los ejercicios y problemas, siempre que sea posible, conectándolos a {intereses_top}. 
 
+ Ahora desarrollarás la clase de la siguiente manera:
 
-Es {'la primera clase' if es_primera_clase else 'una clase posterior'} de la unidad.
+1. Introducción: {' Generar introducción de la unidad {nombre_unidad}, describiendo el tema principal de esta y su utilidad para la vida cotidiana. De ser posible, adecuar a los intereses del alumno.' if es_primera_clase else 'Crear un resumen de la clase {clase-1}, el cual debería durar no más de 3 minutos. Este resumen debe enfatizar en los aspectos procedimentales y conceptuales, pensando en que el alumno ya tomó dicha clase, por lo que debería darse a modo recordatorio.'} .
+  -  IMPORTANTE : Utilizar markdowm para mejorar visualmente
+2. Desarrollo:  
+  - Desarrolla el contenido de la clase de forma detallada y paso a paso (no solo conceptual). 
+  - Explica todos los procedimientos o algoritmos involucrados, mostrando el razonamiento detrás de cada paso. 
+  -  IMPORTANTE : Utilizar markdowm para mejorar visualmente en 
+3. Ejemplos:
+  - Incluye tres ejemplos resueltos: 
+      Uno de nivel fácil, 
+      Uno de nivel medio, 
+      Uno de nivel difícil tipo PAES M1 (problema contextualizado). 
+  - Propón ejercicios que requieran ser desarrollados con lápiz y papel (evita ejercicios de simple cálculo mental). 
 
+4. Ejercicios : 
+  - Propón **ejercicios que requieran ser desarrollados con lápiz y papel** (evita ejercicios de simple cálculo mental).
+  - Genera 3 a 4 ejercicios que el estudiante debe resolver con lápiz y papel. Varía el nivel de dificultad: 1 fácil, 1 medio, 2 difíciles (tipo PAES M1).  Cada ejercicio debe considerar 5 alternativas cada uno, identificadas con una letra desde la “a” hasta la “e” en el comienzo de cada opción, en donde solo debería haber una correcta (de manera aleatoria, la respuesta correcta debería ser una de esas 5). La respuesta correcta no se debe mostrar al alumno, para que este pueda responder. 
+  - "ejercicios_ordenados": [
+  {{
+    "enunciado": "¿Cuál es el resultado de 3 x 4?",
+    "opciones": ["6", "7", "12", "14", "9"],
+    "respuesta_correcta": "12"
+  }}
+]
+  - enunciado
+  - opciones (a-e)
+  - respuesta_correcta
+  - Variar en que cada ejercicio la respuesta correcta sea una de las 5 opciones, de manera aleatoria.
+  - IMPORTANTE : Utilizar markdowm para mejorar visualmente en desarrollo y ejemplos
+  - RECORDAR: Dar ejemplos relacionado a  {intereses_top}
 
-=== TU TAREA ===
-1.⁠ ⁠Eres un profesor de {plan_estudio_nombre} abordando la prueba de {prueba_nombre} en los proximos minutos estaras dictando una clase particular del modulo de {modulo_nombre} {modulo_descripcion},En la unidad {nombre_unidad} {unidad_descripcion}, en la clase la cual consiste en la clase {nombre_clase} la cual consiste en {clase_descripcion}
-El alumno tiene intereses en {intereses_top}. Lo que se debería tomar en consideración para los ejemplos y explicación de la materia. 
-Generar introducción de la unidad describiendo el tema principal de esta y su utilidad para la vida cotidiana. De ser posible, adecuar a los intereses del alumno. 
-2.⁠ ⁠Se debe generar una introducción para abordar en no mas de 1 minuto para la clase explicando el objetivo de esta. 
-Luego de esto deberia generar una explicacion y desarrollo del contenido de la clase lo cual no deberia tomar más de 5 minutos. 
-Posteriormente se debe entregar al alumno algunos ejemplos que lo ayuden a comprender de mejor manera el contenido de la clase. Dentro de los ejemplos se debe mostrat como se deberia resolver cada uno de estos. Estos ejemplos deberían ser de distintos niveles de dificultad (Al menos uno facil, uno medio y otro dificil). En total, la parte de ejemplos no debería tomar más de 5 minutos.
-
-IMPORTANTE : Utilizar markdowm para mejorar visualmente en desarrollo y ejemplos
-RECORDAR: Dar ejemplos relacionado a  {intereses_top}
 
 Que los ejemplos también tengan Markdown
 
+5. Retroalimentación:
+  - Proporciona retroalimentación detallada sobre los ejercicios resueltos, explicando por qué las respuestas son correctas o incorrectas.
 
+6. Sintesis:
+  - Genera una síntesis de la clase {nombre_clase} del módulo {modulo_nombre}, correspondiente a la unidad 
+  -  IMPORTANTE : Utilizar markdowm para mejorar visualmente
+  - En esta síntesis debes incluir obligatoriamente: 
+    
+    Contenidos Abordados:   
+      - Haz un repaso claro y ordenado de los conceptos principales trabajados en esta clase.  
+      - Menciona explícitamente las ideas clave, los procedimientos vistos y los tipos de ejercicios que se practicaron. 
+    
+    Fortalezas del estudiante: 
+      - Indica en qué aspectos el estudiante mostró mayor dominio, precisión o agilidad. 
+      - Ejemplifica con algún tipo de ejercicio o contenido donde haya demostrado comprensión o éxito. 
+    
+    Debilidades o Dificultades: 
+      - Señala claramente qué aspectos costaron más al estudiante. 
+      - Explica si hubo errores recurrentes, confusiones en pasos específicos, o dificultades en tipos de ejercicios. 
+      
+    Tips paso a paso para mejorar: 
+      - Entrega 3 a 5 recomendaciones concretas y accionables para que el estudiante pueda mejorar. 
+      - Cada tip debe ser breve, práctico y relacionado directamente al contenido de esta clase. 
+      - Ordena los tips en formato de pasos (Paso 1, Paso 2, etc.) para que el estudiante sepa exactamente cómo avanzar. 
+  - Vincula algún consejo extra con los intereses del alumno ({intereses_top}), para motivarlo aún más a mejorar. 
 
-
-3. **sintesis**: Genera un resumen final de la clase, reforzando los contenidos aprendidos, su utilidad práctica y su vínculo con los intereses del estudiante. Y retroalimentar las correctas
-
-4. **ejercicios_ordenados**: Lista de objetos con:
-- Recordar formato
-"ejercicios_ordenados": [
-  {{
-    "enunciado": "¿Cuál es el resultado de 3 x 4?",
-    "opciones": ["6", "7", "12", "14", "9"],
-    "respuesta_correcta": "12"
-  }}
-]
-   - 5 Ejercicios
-  - enunciado
-  - opciones (a-e)
-  - respuesta_correcta (valor textual)
-
-Ejemplo ejercicios_ordenados:
-"ejercicios_ordenados": [
-  {{
-    "enunciado": "¿Cuál es el resultado de 3 x 4?",
-    "opciones": ["6", "7", "12", "14", "9"],
-    "respuesta_correcta": "12"
-  }}
-]
-
+  
 Formato final esperado (en JSON estructurado):
 {{
    "introduccion_emocional": "...",
