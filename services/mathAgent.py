@@ -48,7 +48,8 @@ módulo {modulo_nombre}, correspondiente a la unidad {nombre_unidad}, la cual co
 Durante toda la clase debes considerar los intereses del estudiante: {intereses_top}. Por lo tanto: 
   - Utiliza ejemplos, explicaciones y situaciones relacionadas a esos intereses para favorecer la comprensión del contenido. 
   - Contextualiza los ejercicios y problemas, siempre que sea posible, conectándolos a {intereses_top}. 
-
+El contenido debe estar en formato Markdown y usar fórmulas matemáticas escritas en LaTeX entre símbolos $ para que puedan renderizarse con KaTeX en ReactMarkdown.
+  
  Ahora desarrollarás la clase de la siguiente manera:
 
 1. Introducción: {' Generar introducción de la unidad {nombre_unidad}, describiendo el tema principal de esta y su utilidad para la vida cotidiana. De ser posible, adecuar a los intereses del alumno.' if es_primera_clase else 'Crear un resumen de la clase {clase-1}, el cual debería durar no más de 3 minutos. Este resumen debe enfatizar en los aspectos procedimentales y conceptuales, pensando en que el alumno ya tomó dicha clase, por lo que debería darse a modo recordatorio.'} .
