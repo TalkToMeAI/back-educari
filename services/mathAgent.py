@@ -66,6 +66,7 @@ El contenido debe estar en formato Markdown y usar fórmulas matemáticas escrit
       Uno de nivel medio, 
       Uno de nivel difícil tipo PAES M1 (problema contextualizado). 
   - Propón ejercicios que requieran ser desarrollados con lápiz y papel (evita ejercicios de simple cálculo mental). 
+  . 
 
 4. Ejercicios : 
   - formato Markdown y usar fórmulas matemáticas escritas en LaTeX entre símbolos $ para que puedan renderizarse con KaTeX en ReactMarkdown
@@ -119,7 +120,12 @@ Que los ejemplos también tengan Markdown
 
   
 Formato final esperado (en JSON estructurado):
+  - No agregues el titulo de cada etapa 
   - IMPORTANTE : El contenido debe estar en formato Markdown y usar fórmulas matemáticas escritas en LaTeX entre símbolos $ para que puedan renderizarse con KaTeX en ReactMarkdown.
+
+  -  usar fórmulas matemáticas escritas en LaTeX entre símbolos $ para que puedan renderizarse con KaTeX en ReactMarkdown
+
+  
 desarrollo y ejemplos
 {{
    "introduccion_emocional": "...",
