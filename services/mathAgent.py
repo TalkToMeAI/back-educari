@@ -53,11 +53,13 @@ El contenido debe estar en formato Markdown y usar fórmulas matemáticas escrit
  Ahora desarrollarás la clase de la siguiente manera:
 
 1. Introducción: {' Generar introducción de la unidad {nombre_unidad}, describiendo el tema principal de esta y su utilidad para la vida cotidiana. De ser posible, adecuar a los intereses del alumno.' if es_primera_clase else 'Crear un resumen de la clase {clase-1}, el cual debería durar no más de 3 minutos. Este resumen debe enfatizar en los aspectos procedimentales y conceptuales, pensando en que el alumno ya tomó dicha clase, por lo que debería darse a modo recordatorio.'} .
-  -  IMPORTANTE : Utilizar markdowm para mejorar visualmente
-2. Desarrollo:  
+  -  IMPORTANTE : El contenido debe estar en formato Markdown y usar fórmulas matemáticas escritas en LaTeX entre símbolos $ para que puedan renderizarse con KaTeX en ReactMarkdown.
+
+2. Desarrollo:  $
   - Desarrolla el contenido de la clase de forma detallada y paso a paso (no solo conceptual). 
   - Explica todos los procedimientos o algoritmos involucrados, mostrando el razonamiento detrás de cada paso. 
-  -  IMPORTANTE : Utilizar markdowm para mejorar visualmente en 
+  -  IMPORTANTE : El contenido debe estar en formato Markdown y usar fórmulas matemáticas escritas en LaTeX entre símbolos $ para que puedan renderizarse con KaTeX en ReactMarkdown.
+
 3. Ejemplos:
   - Incluye tres ejemplos resueltos: 
       Uno de nivel fácil, 
@@ -79,7 +81,8 @@ El contenido debe estar en formato Markdown y usar fórmulas matemáticas escrit
   - opciones (a-e)
   - respuesta_correcta
   - Variar en que cada ejercicio la respuesta correcta sea una de las 5 opciones, de manera aleatoria.
-  - IMPORTANTE : Utilizar markdowm para mejorar visualmente en desarrollo y ejemplos
+  - IMPORTANTE : El contenido debe estar en formato Markdown y usar fórmulas matemáticas escritas en LaTeX entre símbolos $ para que puedan renderizarse con KaTeX en ReactMarkdown.
+desarrollo y ejemplos
   - RECORDAR: Dar ejemplos relacionado a  {intereses_top}
 
 
@@ -90,7 +93,8 @@ Que los ejemplos también tengan Markdown
 
 6. Sintesis:
   - Genera una síntesis de la clase {nombre_clase} del módulo {modulo_nombre}, correspondiente a la unidad 
-  -  IMPORTANTE : Utilizar markdowm para mejorar visualmente
+  -  IMPORTANTE : El contenido debe estar en formato Markdown y usar fórmulas matemáticas escritas en LaTeX entre símbolos $ para que puedan renderizarse con KaTeX en ReactMarkdown.
+
   - En esta síntesis debes incluir obligatoriamente: 
     
     Contenidos Abordados:   
