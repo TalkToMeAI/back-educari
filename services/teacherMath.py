@@ -12,7 +12,21 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 def clase_personalizada(id_estudiante: str, id_clase: str):
     # 1. Datos de la clase
+
+    #Traer la calse anterior si es que tiene en su unidad 
+    id_estudiante = id_estudiante.strip()
+
     clase_data = supabase.table("clase").select("*").eq("id", id_clase).single().execute().data
+
+    clase_anterior_result = (
+    supabase.rpc("obtener_clase_anterior", {"clase_actual_id": id_clase})
+    .execute()
+    )
+
+    clase_anterior = clase_anterior_result.data[0] if clase_anterior_result.data else None
+
+    if clase_anterior:
+        print(f"🧩 Clase anterior encontrada: {clase_anterior}")
 
     unidad_data_id = clase_data.get("contenido_id")
     unidad_data = supabase.table("unidad").select("*").eq("id", unidad_data_id).single().execute().data
@@ -28,31 +42,16 @@ def clase_personalizada(id_estudiante: str, id_clase: str):
 
 
 
-    # 2. Contenido de la clase
     contenido = supabase.table("clase_contenido").select("*").eq("clase_id", id_clase).execute().data
 
-    # 3. Resultados del estudiante
     resultados = supabase.table("resultados").select("*").eq("estudiante_id", id_estudiante).execute().data
 
-    # 4. Intereses del estudiante
     intereses = supabase.table("intereses_estudiante").select("*").eq("estudiante_id", id_estudiante).execute().data
 
-    # 5. Etapa actual y filtrado de recursos
     etapa_actual = extraer_etapa_actual(contenido)
-    recursos_relevantes = filtrar_contenido_por_etapa(contenido, etapa_actual)
 
-    # 🔁 5.1 Generar explicación GPT para cada recurso visual
     recursos_con_explicacion = []
-    # for recurso in recursos_relevantes:
-    #     if recurso.get("tipo") == "banco_fotos":
-    #         try:
-    #             explicacion = explicar_imagen_usando_vision(recurso, clase_data)
-    #         except Exception as e:
-    #             explicacion = f"⚠️ No se pudo generar la explicación: {str(e)}"
-    #         recurso["explicacion_gpt"] = explicacion
-    #     recursos_con_explicacion.append(recurso)
 
-    # 6. Obtener resultados con info de prueba asociada
     resultados_con_pruebas = []
     for resultado in resultados:
         prueba_id = resultado.get("prueba_id")
@@ -67,7 +66,6 @@ def clase_personalizada(id_estudiante: str, id_clase: str):
                 "interpretacion": resultado.get("interpretacion")
             })
 
-    # 7. Respuesta final combinada
     return {
         "clase": clase_data,
         "unidad" : unidad_data,
@@ -79,7 +77,8 @@ def clase_personalizada(id_estudiante: str, id_clase: str):
         "etapa_actual": etapa_actual,
         "recursos_relevantes": recursos_con_explicacion,  # ✅ con explicaciones
         "resultados_estudiante": resultados_con_pruebas,
-        "intereses_estudiante": intereses
+        "intereses_estudiante": intereses,
+        "clase_anterior": clase_anterior,
     }
 
 def extraer_etapa_actual(contenido):

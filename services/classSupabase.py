@@ -12,6 +12,10 @@ def generar_clase_dinamica_sin_chunks(id_estudiante: str, id_clase: str):
     unidad = datos.get("unidad", {})
     modulo = datos.get("modulo", {})
     prueba = datos.get("prueba", {})
+
+    clase_anterior = datos.get("clase_anterior", {})
+
+
     plan_estudio = datos.get("plan_estudio", {})
     contenido_data = datos.get("contenido_completo", {})
     recursos_apoyo = [
@@ -29,31 +33,25 @@ def generar_clase_dinamica_sin_chunks(id_estudiante: str, id_clase: str):
     nombre_clase = clase.get("titulo", "nombre no especificado")
     unidad_descripcion = unidad.get("descripcion", "sin descripción")
     nombre_unidad =  unidad.get("titulo", "sin descripción")
+    id_unidad =  unidad.get("id", "sin id")
+
     modulo_descripcion = modulo.get("descripcion", "sin descripción")
     modulo_nombre = modulo.get("titulo", "sin descripción")
     prueba_nombre = prueba.get("nombre", "sin descripción")
     plan_estudio_nombre = plan_estudio.get("nombre", "sin descripción")
 
+    nombre_clase_anterior = clase_anterior.get("titulo", "sin descripción")
+    descripcion_clase_anterior = clase_anterior.get("descripcion", "sin descripción")
+    contenido_clase_anterior = clase_anterior.get("contenido_id", "sin contenido")
 
 
     clase_descripcion = clase.get("descripcion", "sin descripción")
-    es_primera = clase.get("es_primera_clase", True)
-
-    print(f"""
-        📘 Información de la clase:\
-          
-        - clase_descripcion: {clase_descripcion}
-        - Unidad_descripcion: {unidad_descripcion}
-        - Módulo: {modulo_descripcion}
-        - Prueba: {prueba_nombre}
-        - Plan Estudio: {plan_estudio_nombre}
-        - Nombre de la clase: {nombre_clase}
-        - ¿Es la primera clase?: {"Sí" if es_primera else "No"}
-
-        """)
-
-
-
+    print("🧩 EGUAAAL :", contenido_clase_anterior , id_unidad)
+    if str(contenido_clase_anterior) == str(id_unidad) :
+        es_primera = True
+        
+    else:
+        es_primera = False
 
     profile = StudentProfile(
         personalidad="reflexivo y constante",
@@ -64,6 +62,7 @@ def generar_clase_dinamica_sin_chunks(id_estudiante: str, id_clase: str):
         },
         estado_emocional="motivado"
     )
+    print(f"Es primera clase: {es_primera}")
 
 
     # No hay chunks disponibles
@@ -80,10 +79,9 @@ def generar_clase_dinamica_sin_chunks(id_estudiante: str, id_clase: str):
         nombre_clase = nombre_clase,
         modulo_nombre = modulo_nombre,
         nombre_unidad = nombre_unidad,
-        es_primera_clase = "false"
-
-
-   
+        es_primera_clase = es_primera,
+        nombre_clase_anterior = nombre_clase_anterior,
+        descripcion_clase_anterior = descripcion_clase_anterior,
     )
     clase_generada.recursos_apoyo = recursos_apoyo
 

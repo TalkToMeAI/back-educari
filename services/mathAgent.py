@@ -32,15 +32,19 @@ def plan_clase_dinamica(
     modulo_nombre : str,
     nombre_unidad: str,
     es_primera_clase: bool,
-    contenido_disponible: List[ClassContentChunk] = None,
-    recursos_apoyo: Optional[List[dict]] = None
+    nombre_clase_anterior: str ,
+    descripcion_clase_anterior :  str
+
 ) -> ClaseDinamica:
-    """Genera una clase estructurada paso a paso según el flujo pedagógico"""
+
 
     if student_profile.intereses:
         intereses_top = ", ".join(random.sample(student_profile.intereses, min(5, len(student_profile.intereses))))
     else:
         intereses_top = "deportes y juegos"
+
+
+
     prompt = f"""
 Eres un profesor de {plan_estudio_nombre}, abordando la asignatura de {prueba_nombre}. En los próximos minutos estarás dictando una clase particular del módulo 
 módulo {modulo_nombre}, correspondiente a la unidad {nombre_unidad}, la cual consiste en {clase_descripcion}. En específicio {nombre_clase}. Cuyo objetivo es enseñar al alumno sobre {clase_descripcion}.
@@ -52,15 +56,21 @@ El contenido debe estar en formato Markdown y usar fórmulas matemáticas escrit
   
  Ahora desarrollarás la clase de la siguiente manera:
 
-1. Introducción: {' Generar introducción de la unidad {nombre_unidad}, describiendo el tema principal de esta y su utilidad para la vida cotidiana. De ser posible, adecuar a los intereses del alumno.' if es_primera_clase else 'Crear un resumen de la clase {clase-1}, el cual debería durar no más de 3 minutos. Este resumen debe enfatizar en los aspectos procedimentales y conceptuales, pensando en que el alumno ya tomó dicha clase, por lo que debería darse a modo recordatorio.'} .
+1. Introducción: 
+  Generar introducción de la unidad {nombre_unidad}, describiendo el tema principal de esta y su utilidad para la vida cotidiana. De ser posible, adecuar a los intereses del alumno.
+
+  
+2. Repaso de la unidad:
+
+{f"""Crear un resumen de la clase **{nombre_clase_anterior}**, cuyo contenido fue: *{descripcion_clase_anterior}*. El resumen debe durar no más de 3 minutos y enfocarse en los aspectos procedimentales y conceptuales. Se debe asumir que el alumno ya cursó esta clase, por lo que se trata de un recordatorio.""" if es_primera_clase else "No generar repaso, ya que esta clase inicia una nueva unidad."}
   -  IMPORTANTE : El contenido debe estar en formato Markdown y usar fórmulas matemáticas escritas en LaTeX entre símbolos $ para que puedan renderizarse con KaTeX en ReactMarkdown.
 
-2. Desarrollo:  $
+3. Desarrollo:
   - Desarrolla el contenido de la clase de forma detallada y paso a paso (no solo conceptual). 
   - Explica todos los procedimientos o algoritmos involucrados, mostrando el razonamiento detrás de cada paso. 
   -  IMPORTANTE : El contenido debe estar en formato Markdown y usar fórmulas matemáticas escritas en LaTeX entre símbolos $ para que puedan renderizarse con KaTeX en ReactMarkdown.
 
-3. Ejemplos:
+4. Ejemplos:
   - Incluye tres ejemplos resueltos: 
       Uno de nivel fácil, 
       Uno de nivel medio, 
@@ -68,7 +78,7 @@ El contenido debe estar en formato Markdown y usar fórmulas matemáticas escrit
   - Propón ejercicios que requieran ser desarrollados con lápiz y papel (evita ejercicios de simple cálculo mental). 
   . 
 
-4. Ejercicios : 
+5. Ejercicios : 
   - formato Markdown y usar fórmulas matemáticas escritas en LaTeX entre símbolos $ para que puedan renderizarse con KaTeX en ReactMarkdown
   - Propón **ejercicios que requieran ser desarrollados con lápiz y papel** (evita ejercicios de simple cálculo mental).
   - Genera 3 a 4 ejercicios que el estudiante debe resolver con lápiz y papel. Varía el nivel de dificultad: 1 fácil, 1 medio, 2 difíciles (tipo PAES M1).  Cada ejercicio debe considerar 5 alternativas cada uno, identificadas con una letra desde la “a” hasta la “e” en el comienzo de cada opción, en donde solo debería haber una correcta (de manera aleatoria, la respuesta correcta debería ser una de esas 5). La respuesta correcta no se debe mostrar al alumno, para que este pueda responder. 
@@ -91,10 +101,10 @@ desarrollo y ejemplos
 
 Que los ejemplos también tengan Markdown
 
-5. Retroalimentación:
+6. Retroalimentación:
   - Proporciona retroalimentación detallada sobre los ejercicios resueltos, explicando por qué las respuestas son correctas o incorrectas.
 
-6. Sintesis:
+7. Sintesis:
   - Genera una síntesis de la clase {nombre_clase} del módulo {modulo_nombre}, correspondiente a la unidad 
   -  IMPORTANTE : El contenido debe estar en formato Markdown y usar fórmulas matemáticas escritas en LaTeX entre símbolos $ para que puedan renderizarse con KaTeX en ReactMarkdown.
 
@@ -122,10 +132,10 @@ Que los ejemplos también tengan Markdown
 Formato final esperado (en JSON estructurado):
   - No agregues el titulo de cada etapa 
   - IMPORTANTE : El contenido debe estar en formato Markdown y usar fórmulas matemáticas escritas en LaTeX entre símbolos $ para que puedan renderizarse con KaTeX en ReactMarkdown.
-
   -  usar fórmulas matemáticas escritas en LaTeX entre símbolos $ para que puedan renderizarse con KaTeX en ReactMarkdown
 
   
+
 desarrollo y ejemplos
 {{
    "introduccion_emocional": "...",
@@ -134,7 +144,6 @@ desarrollo y ejemplos
    "desarrollo": "...",
    "ejemplos": ["...", "..."],
    "ejercicios": ["...", "..."],
-   "retroalimentacion": "...",
    "sintesis": "...",
    "recursos_apoyo": [
      {{
@@ -153,7 +162,8 @@ desarrollo y ejemplos
    ]
 }}
 """
-
+    print(prompt)
+    
     completion = client.beta.chat.completions.parse(
         model=model,
         messages=[
