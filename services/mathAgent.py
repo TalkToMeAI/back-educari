@@ -68,6 +68,7 @@ El contenido debe estar en formato Markdown y usar fórmulas matemáticas escrit
   - Propón ejercicios que requieran ser desarrollados con lápiz y papel (evita ejercicios de simple cálculo mental). 
 
 4. Ejercicios : 
+  - formato Markdown y usar fórmulas matemáticas escritas en LaTeX entre símbolos $ para que puedan renderizarse con KaTeX en ReactMarkdown
   - Propón **ejercicios que requieran ser desarrollados con lápiz y papel** (evita ejercicios de simple cálculo mental).
   - Genera 3 a 4 ejercicios que el estudiante debe resolver con lápiz y papel. Varía el nivel de dificultad: 1 fácil, 1 medio, 2 difíciles (tipo PAES M1).  Cada ejercicio debe considerar 5 alternativas cada uno, identificadas con una letra desde la “a” hasta la “e” en el comienzo de cada opción, en donde solo debería haber una correcta (de manera aleatoria, la respuesta correcta debería ser una de esas 5). La respuesta correcta no se debe mostrar al alumno, para que este pueda responder. 
   - "ejercicios_ordenados": [
@@ -84,6 +85,7 @@ El contenido debe estar en formato Markdown y usar fórmulas matemáticas escrit
   - IMPORTANTE : El contenido debe estar en formato Markdown y usar fórmulas matemáticas escritas en LaTeX entre símbolos $ para que puedan renderizarse con KaTeX en ReactMarkdown.
 desarrollo y ejemplos
   - RECORDAR: Dar ejemplos relacionado a  {intereses_top}
+  - formato Markdown y usar fórmulas matemáticas escritas en LaTeX entre símbolos $ para que puedan renderizarse con KaTeX en ReactMarkdown
 
 
 Que los ejemplos también tengan Markdown
@@ -117,6 +119,8 @@ Que los ejemplos también tengan Markdown
 
   
 Formato final esperado (en JSON estructurado):
+  - IMPORTANTE : El contenido debe estar en formato Markdown y usar fórmulas matemáticas escritas en LaTeX entre símbolos $ para que puedan renderizarse con KaTeX en ReactMarkdown.
+desarrollo y ejemplos
 {{
    "introduccion_emocional": "...",
    "repaso_unidad": "...",
