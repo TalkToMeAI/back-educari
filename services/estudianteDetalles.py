@@ -33,7 +33,6 @@ def clase_personalizada(id_estudiante: str, id_clase: str):
             explicacion = explicar_imagen_usando_vision(recurso, clase_data)
         except Exception as e:
             explicacion = f"⚠️ No se pudo generar la explicación: {str(e)}"
-            print(explicacion)
 
         recurso["explicacion_gpt"] = explicacion
         recursos_con_explicacion.append(recurso)

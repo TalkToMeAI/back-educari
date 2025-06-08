@@ -100,11 +100,7 @@ desarrollo y ejemplos
 
 
 Que los ejemplos también tengan Markdown
-
-6. Retroalimentación:
-  - Proporciona retroalimentación detallada sobre los ejercicios resueltos, explicando por qué las respuestas son correctas o incorrectas.
-
-7. Sintesis:
+6. Sintesis:
   - Genera una síntesis de la clase {nombre_clase} del módulo {modulo_nombre}, correspondiente a la unidad 
   -  IMPORTANTE : El contenido debe estar en formato Markdown y usar fórmulas matemáticas escritas en LaTeX entre símbolos $ para que puedan renderizarse con KaTeX en ReactMarkdown.
 
@@ -162,7 +158,6 @@ desarrollo y ejemplos
    ]
 }}
 """
-    print(prompt)
     
     completion = client.beta.chat.completions.parse(
         model=model,

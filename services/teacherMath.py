@@ -25,8 +25,7 @@ def clase_personalizada(id_estudiante: str, id_clase: str):
 
     clase_anterior = clase_anterior_result.data[0] if clase_anterior_result.data else None
 
-    if clase_anterior:
-        print(f"🧩 Clase anterior encontrada: {clase_anterior}")
+
 
     unidad_data_id = clase_data.get("contenido_id")
     unidad_data = supabase.table("unidad").select("*").eq("id", unidad_data_id).single().execute().data
@@ -48,7 +47,6 @@ def clase_personalizada(id_estudiante: str, id_clase: str):
 
     intereses = supabase.table("intereses_estudiante").select("*").eq("estudiante_id", id_estudiante).execute().data
 
-    etapa_actual = extraer_etapa_actual(contenido)
 
     recursos_con_explicacion = []
 
@@ -74,7 +72,6 @@ def clase_personalizada(id_estudiante: str, id_clase: str):
         "plan_estudio": plan_estudio_data,
 
         "contenido_completo": contenido,
-        "etapa_actual": etapa_actual,
         "recursos_relevantes": recursos_con_explicacion,  # ✅ con explicaciones
         "resultados_estudiante": resultados_con_pruebas,
         "intereses_estudiante": intereses,

@@ -40,11 +40,9 @@ def split_text(documents: list[Document]):
         add_start_index=True,
     )
     chunks = text_splitter.split_documents(documents)
-    print(f"Split {len(documents)} documents into {len(chunks)} chunks.")
 
     document = chunks[10]
-    print(document.page_content)
-    print(document.metadata)
+
 
     return chunks
 
@@ -57,7 +55,6 @@ def save_to_chroma(chunks: list[Document]):
         chunks, OpenAIEmbeddings(), persist_directory=CHROMA_PATH
     )
     db.persist()
-    print(f"Saved {len(chunks)} chunks to {CHROMA_PATH}.")
 
 
 if __name__ == "__main__":

@@ -5,7 +5,6 @@ def generar_clase_dinamica_sin_chunks(id_estudiante: str, id_clase: str):
 
 
     datos = clase_personalizada(id_estudiante=id_estudiante, id_clase=id_clase)
-    print("🧩 Datos recibidos desde clase_personalizada:", datos)
 
 
     clase = datos.get("clase", {})
@@ -31,6 +30,7 @@ def generar_clase_dinamica_sin_chunks(id_estudiante: str, id_clase: str):
 
 
     nombre_clase = clase.get("titulo", "nombre no especificado")
+    clase_descripcion = clase.get("descripcion", "sin descripción")  # <-- Agrega esta línea
     unidad_descripcion = unidad.get("descripcion", "sin descripción")
     nombre_unidad =  unidad.get("titulo", "sin descripción")
     id_unidad =  unidad.get("id", "sin id")
@@ -40,18 +40,16 @@ def generar_clase_dinamica_sin_chunks(id_estudiante: str, id_clase: str):
     prueba_nombre = prueba.get("nombre", "sin descripción")
     plan_estudio_nombre = plan_estudio.get("nombre", "sin descripción")
 
-    nombre_clase_anterior = clase_anterior.get("titulo", "sin descripción")
-    descripcion_clase_anterior = clase_anterior.get("descripcion", "sin descripción")
-    contenido_clase_anterior = clase_anterior.get("contenido_id", "sin contenido")
-
-
-    clase_descripcion = clase.get("descripcion", "sin descripción")
-    print("🧩 EGUAAAL :", contenido_clase_anterior , id_unidad)
-    if str(contenido_clase_anterior) == str(id_unidad) :
+    if not clase_anterior or not clase_anterior.get("contenido_id"):
         es_primera = True
-        
+        nombre_clase_anterior = ""
+        descripcion_clase_anterior = ""
     else:
-        es_primera = False
+        nombre_clase_anterior = clase_anterior.get("titulo", "sin descripción")
+        descripcion_clase_anterior = clase_anterior.get("descripcion", "sin descripción")
+        contenido_clase_anterior = clase_anterior.get("contenido_id", "sin contenido")
+        es_primera = str(contenido_clase_anterior) == str(id_unidad)
+
 
     profile = StudentProfile(
         personalidad="reflexivo y constante",
@@ -62,7 +60,6 @@ def generar_clase_dinamica_sin_chunks(id_estudiante: str, id_clase: str):
         },
         estado_emocional="motivado"
     )
-    print(f"Es primera clase: {es_primera}")
 
 
     # No hay chunks disponibles
