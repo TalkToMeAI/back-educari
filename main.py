@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
@@ -10,6 +10,12 @@ from services.classSupabase import generar_clase_dinamica_sin_chunks
 from dotenv import load_dotenv
 from models.studenProfile import StudentProfile
 from models.constContectChunk import ClassContentChunk
+from services.synthesis import generar_sintesis 
+
+from fastapi.responses import JSONResponse
+import re
+import json
+
 load_dotenv()
 
 chat_client = OpenAIChatClient()
@@ -37,6 +43,13 @@ class ChatRequest(BaseModel):
     messages: list[dict]
     model: str | None = "gpt-4o"
     system_prompt: str | None = "You're a helpful assistant."
+
+
+class ClaseInput(BaseModel):
+    clase: str
+    modulo: str
+    unidad: str
+
 
 routes = APIRouter()
 
@@ -105,3 +118,21 @@ def crear_clase_ia2(id_estudiante: str, id_clase: str):
         id_estudiante=id_estudiante,
         id_clase=id_clase
     )
+
+
+
+@app.post("/clase/sintesis")
+async def crear_clase_sintesis(data: ClaseInput):
+    try:
+        result_str = generar_sintesis(data.clase, data.modulo, data.unidad)
+
+        # Extraer solo el JSON válido (en caso de que haya texto adicional)
+        match = re.search(r"\{[\s\S]*\}", result_str)
+        if not match:
+            raise ValueError("No se encontró JSON válido en la respuesta.")
+
+        parsed = json.loads(match.group(0))
+        return JSONResponse(content=parsed)
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
